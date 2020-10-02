@@ -55,11 +55,20 @@ class App extends Component {
     localStorage.removeItem('expiryDate');
     localStorage.removeItem('userId');
   };
-
+  
   loginHandler = (event, authData) => {
     event.preventDefault();
     this.setState({ authLoading: true });
-    fetch('http://localhost:8080/auth/login')
+    fetch('http://localhost:8080/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          email: authData.email,
+          password: authData.password,
+        })
+      })
       .then(res => {
         if (res.status === 422) {
           throw new Error('Validation failed.');
@@ -71,15 +80,14 @@ class App extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log(resData);
         this.setState({
           isAuth: true,
           token: resData.token,
           authLoading: false,
-          userId: resData.userId
+          userId: resData.data._id
         });
         localStorage.setItem('token', resData.token);
-        localStorage.setItem('userId', resData.userId);
+        localStorage.setItem('userId', resData._id);
         const remainingMilliseconds = 60 * 60 * 1000;
         const expiryDate = new Date(
           new Date().getTime() + remainingMilliseconds
