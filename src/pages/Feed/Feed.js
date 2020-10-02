@@ -22,7 +22,16 @@ class Feed extends Component {
   };
 
   componentDidMount() {
-    fetch('URL')
+    const token = localStorage.token;
+    fetch('http://localhost:8080/user/'+ token, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        userId: token
+      })
+    })
       .then(res => {
         if (res.status !== 200) {
           throw new Error('Failed to fetch user status.');
@@ -68,8 +77,18 @@ class Feed extends Component {
   };
 
   statusUpdateHandler = event => {
+    const token = localStorage.token;
     event.preventDefault();
-    fetch('URL')
+    fetch('http://localhost:8080/user/' + token, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'PATCH',
+      body: JSON.stringify({
+        userId: token,
+        status: this.state.status
+      })
+    })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error("Can't update status!");
