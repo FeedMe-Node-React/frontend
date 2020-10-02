@@ -139,7 +139,8 @@ class Feed extends Component {
       },
       body: JSON.stringify({
         title: postData.title,
-        content: postData.content
+        content: postData.content,
+        userId: localStorage.token
       })
     })
       .then(res => {
@@ -153,7 +154,7 @@ class Feed extends Component {
           _id: resData.post._id,
           title: resData.post.title,
           content: resData.post.content,
-          creator: resData.post.creator.name,
+          // creator: resData.post.creator.name,
           createdAt: resData.post.createdAt
         };
         this.setState(prevState => {
