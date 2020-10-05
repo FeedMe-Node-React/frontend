@@ -22,14 +22,14 @@ class Feed extends Component {
   };
 
   componentDidMount() {
-    const token = localStorage.token;
-    fetch('http://localhost:8080/user/'+ token, {
+    const userId = localStorage._id;
+    fetch('http://localhost:8080/user/' + userId, {
       headers: {
         'Content-Type': 'application/json'
       },
       method: 'POST',
       body: JSON.stringify({
-        userId: token
+        userId: userId
       })
     })
       .then(res => {
@@ -77,15 +77,15 @@ class Feed extends Component {
   };
 
   statusUpdateHandler = event => {
-    const token = localStorage.token;
+    const userId = localStorage.userId;
     event.preventDefault();
-    fetch('http://localhost:8080/user/' + token, {
+    fetch('http://localhost:8080/user/' + userId, {
       headers: {
         'Content-Type': 'application/json'
       },
       method: 'PATCH',
       body: JSON.stringify({
-        userId: token,
+        userId: userId,
         status: this.state.status
       })
     })
