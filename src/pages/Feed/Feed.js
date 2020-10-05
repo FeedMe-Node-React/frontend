@@ -22,7 +22,7 @@ class Feed extends Component {
   };
 
   componentDidMount() {
-    const userId = localStorage._id;
+    const userId = this.props.userId;
     fetch('http://localhost:8080/user/' + userId, {
       headers: {
         'Content-Type': 'application/json'
@@ -59,7 +59,11 @@ class Feed extends Component {
       page--;
       this.setState({ postPage: page });
     }
-    fetch('http://localhost:8080/feed/posts/')
+    fetch('http://localhost:8080/feed/posts/', {
+      headers: {
+        Authorization: 'Bearer ' + this.props.token
+      }
+    })
       .then(res => {
         if (res.status !== 200) {
           throw new Error('Failed to fetch posts.');
@@ -77,11 +81,12 @@ class Feed extends Component {
   };
 
   statusUpdateHandler = event => {
-    const userId = localStorage.userId;
+    const userId = this.props.userId;
     event.preventDefault();
     fetch('http://localhost:8080/user/' + userId, {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.props.token,
       },
       method: 'PATCH',
       body: JSON.stringify({
@@ -134,7 +139,8 @@ class Feed extends Component {
     fetch(url, {
       method: method,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.props.token,
       },
       body: JSON.stringify({
         title: postData.title,
@@ -153,7 +159,7 @@ class Feed extends Component {
           _id: resData.post._id,
           title: resData.post.title,
           content: resData.post.content,
-          // creator: resData.post.creator.name,
+          creator: resData.post.creator,
           createdAt: resData.post.createdAt
         };
         this.setState(prevState => {
@@ -191,7 +197,11 @@ class Feed extends Component {
 
   deletePostHandler = postId => {
     this.setState({ postsLoading: true });
-    fetch('http://localhost:8080/feed/post/' + postId)
+    fetch('http://localhost:8080/feed/post/' + postId, {
+      headers: {
+        Authorization: 'Bearer ' + this.props.token,
+      }
+    })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Deleting a post failed!');
