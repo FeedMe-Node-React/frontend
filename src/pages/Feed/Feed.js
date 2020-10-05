@@ -108,7 +108,6 @@ class Feed extends Component {
   startEditPostHandler = postId => {
     this.setState(prevState => {
       const loadedPost = { ...prevState.posts.find(p => p._id === postId) };
-
       return {
         isEditing: true,
         editPost: loadedPost
