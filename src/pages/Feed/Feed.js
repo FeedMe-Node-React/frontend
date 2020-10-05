@@ -145,7 +145,7 @@ class Feed extends Component {
       body: JSON.stringify({
         title: postData.title,
         content: postData.content,
-        userId: localStorage.token
+        userId: this.props.userId
       })
     })
       .then(res => {
