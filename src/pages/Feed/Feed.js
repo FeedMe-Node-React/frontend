@@ -128,7 +128,12 @@ class Feed extends Component {
     this.setState({
       editLoading: true
     });
-    // Set up data (with image!)
+    const formData = new FormData();
+    formData.append('title', postData.title)
+    formData.append('content', postData.content)
+    formData.append('image', postData.image)
+    formData.append('userId', this.props.userId)
+
     let url = 'http://localhost:8080/feed/post/';
     let method = 'POST'
     if (this.state.editPost) {
@@ -139,14 +144,9 @@ class Feed extends Component {
     fetch(url, {
       method: method,
       headers: {
-        'Content-Type': 'application/json',
         Authorization: 'Bearer ' + this.props.token,
       },
-      body: JSON.stringify({
-        title: postData.title,
-        content: postData.content,
-        userId: localStorage.token
-      })
+      body: formData
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
@@ -159,6 +159,7 @@ class Feed extends Component {
           _id: resData.post._id,
           title: resData.post.title,
           content: resData.post.content,
+          imageUrl: resData.post.imageUrl,
           creator: resData.post.creator,
           createdAt: resData.post.createdAt
         };
@@ -198,6 +199,7 @@ class Feed extends Component {
   deletePostHandler = postId => {
     this.setState({ postsLoading: true });
     fetch('http://localhost:8080/feed/post/' + postId, {
+      method: 'DELETE',
       headers: {
         Authorization: 'Bearer ' + this.props.token,
       }
