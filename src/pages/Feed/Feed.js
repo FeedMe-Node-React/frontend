@@ -23,7 +23,7 @@ class Feed extends Component {
 
   componentDidMount() {
     const userId = this.props.userId;
-    fetch('http://localhost:8080/user/' + userId, {
+    fetch('https://feed-me-node-api.herokuapp.com/user/' + userId, {
       headers: {
         'Content-Type': 'application/json'
       },
@@ -59,7 +59,7 @@ class Feed extends Component {
       page--;
       this.setState({ postPage: page });
     }
-    fetch('http://localhost:8080/feed/posts/', {
+    fetch('https://feed-me-node-api.herokuapp.com/feed/posts/', {
       headers: {
         Authorization: 'Bearer ' + this.props.token
       }
@@ -83,7 +83,7 @@ class Feed extends Component {
   statusUpdateHandler = event => {
     const userId = this.props.userId;
     event.preventDefault();
-    fetch('http://localhost:8080/user/' + userId, {
+    fetch('https://feed-me-node-api.herokuapp.com/user/' + userId, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + this.props.token,
@@ -134,7 +134,7 @@ class Feed extends Component {
     formData.append('image', postData.image)
     formData.append('userId', this.props.userId)
 
-    let url = 'http://localhost:8080/feed/post/';
+    let url = 'https://feed-me-node-api.herokuapp.com/feed/post/';
     let method = 'POST'
     if (this.state.editPost) {
       url = url + this.state.editPost._id;
@@ -198,7 +198,7 @@ class Feed extends Component {
 
   deletePostHandler = postId => {
     this.setState({ postsLoading: true });
-    fetch('http://localhost:8080/feed/post/' + postId, {
+    fetch('https://feed-me-node-api.herokuapp.com/feed/post/' + postId, {
       method: 'DELETE',
       headers: {
         Authorization: 'Bearer ' + this.props.token,
