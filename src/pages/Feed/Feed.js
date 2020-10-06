@@ -129,7 +129,6 @@ class Feed extends Component {
       editLoading: true
     });
     const formData = new FormData();
-    console.log(postData)
     formData.append('title', postData.title)
     formData.append('content', postData.content)
     formData.append('image', postData.image)
