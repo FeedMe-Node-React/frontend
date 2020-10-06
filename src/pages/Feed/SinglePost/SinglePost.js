@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-// import Image from '../../../components/Image/Image';
+import Image from '../../../components/Image/Image';
 import './SinglePost.css';
 
 class SinglePost extends Component {
@@ -8,7 +8,7 @@ class SinglePost extends Component {
     title: '',
     creator: '',
     date: '',
-    // image: '',
+    image: '',
     content: ''
   };
 
@@ -30,7 +30,7 @@ class SinglePost extends Component {
         this.setState({
           title: resData.post.title,
           creator: resData.post.creator,
-          // image: resData.post.imageUrl,
+          image: resData.post.imageUrl,
           date: new Date(resData.post.createdAt).toLocaleDateString('en-US'),
           content: resData.post.content
         });
@@ -47,9 +47,9 @@ class SinglePost extends Component {
         <h2>
           Created by {this.state.creator} on {this.state.date}
         </h2>
-        {/* <div className="single-post__image">
+        <div className="single-post__image">
           <Image contain imageUrl={this.state.image} />
-        </div> */}
+        </div>
         <p>{this.state.content}</p>
       </section>
     );
