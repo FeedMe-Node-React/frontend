@@ -77,7 +77,7 @@ class FeedEdit extends Component {
       let isValid = true;
       for (const validator of prevState.postForm[input].validators) {
         isValid = isValid && validator(value);
-      }
+      };
       const updatedForm = {
         ...prevState.postForm,
         [input]: {
