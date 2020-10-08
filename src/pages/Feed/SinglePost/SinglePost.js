@@ -6,7 +6,7 @@ import './SinglePost.css';
 class SinglePost extends Component {
   state = {
     title: '',
-    creator: '',
+    user: '',
     date: '',
     image: '',
     content: ''
@@ -14,7 +14,7 @@ class SinglePost extends Component {
 
   componentDidMount() {
     const postId = this.props.match.params.postId;
-    fetch('https://feed-me-node-api.herokuapp.com/feed/post/' + postId, {
+    fetch('http://localhost:8080/feed/post/' + postId, {
       headers: {
         Authorization: 'Bearer ' + this.props.token
       }
@@ -26,13 +26,13 @@ class SinglePost extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log(resData.post)
+        console.log(resData.data)
         this.setState({
-          title: resData.post.title,
-          creator: resData.post.creator,
-          image: resData.post.imageUrl,
-          date: new Date(resData.post.createdAt).toLocaleDateString('en-US'),
-          content: resData.post.content
+          title: resData.title,
+          user: resData.user.name,
+          image: 'http://localhost:8080/' + resData.imageUrl,
+          date: new Date(resData.createdAt).toLocaleDateString('en-US'),
+          content: resData.content
         });
       })
       .catch(err => {
@@ -45,7 +45,7 @@ class SinglePost extends Component {
       <section className="single-post">
         <h1>{this.state.title}</h1>
         <h2>
-          Created by {this.state.creator} on {this.state.date}
+          Created by {this.state.user} on {this.state.date}
         </h2>
         <div className="single-post__image">
           <Image contain imageUrl={this.state.image} />
