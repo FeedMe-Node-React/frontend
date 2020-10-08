@@ -59,7 +59,7 @@ class App extends Component {
   loginHandler = (event, authData) => {
     event.preventDefault();
     this.setState({ authLoading: true });
-    fetch('https://feed-me-node-api.herokuapp.com/auth/login', {
+    fetch('http://localhost:8080/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -108,7 +108,7 @@ class App extends Component {
   signupHandler = (event, authData) => {
     event.preventDefault();
     this.setState({ authLoading: true });
-    fetch('https://feed-me-node-api.herokuapp.com/auth/signup', {
+    fetch('http://localhost:8080/auth/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
