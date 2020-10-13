@@ -13,7 +13,7 @@ const post = props => (
       <h1 className="post__title">{props.title}</h1>
     </header>
     <div className="post__image">
-      <Image image={props.imageUrl} contain />
+      <Image image={props.image} contain />
     </div>
     <div className="post__content">{props.content}</div>
     <div className="post__actions">
