@@ -43,15 +43,17 @@ class Feed extends Component {
         this.setState({ status: resData.status });
       })
       .catch(this.catchError);
-
-    this.loadPosts();
-    const socket = openSocket('http://localhost:8080')
-    socket.on('posts', data => {
-      if(data.action == 'create') {
-        this.addPost(data.post)
-      }
-    })
+      
+      this.loadPosts();
+      const socket = openSocket('http://localhost:8080');
+      socket.on('posts', data => {
+        if (data.action === 'create') {
+          console.log("Socket Connected")
+          this.addPost(data.post);
+        }
+      });
   }
+
 
   addPost = post => {
     this.setState(prevState => {
@@ -84,6 +86,7 @@ class Feed extends Component {
     }
     fetch('http://localhost:8080/feed/posts/', {
       headers: {
+        'Content-Type': 'application/json',
         Authorization: 'Bearer ' + this.props.token
       }
     })
@@ -94,12 +97,12 @@ class Feed extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log(resData)
         this.setState({
           posts: resData,
           totalPosts: resData.totalItems,
           postsLoading: false
         });
+        console.log(resData)
       })
       .catch(this.catchError);
   };
@@ -179,12 +182,11 @@ class Feed extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log(resData);
         const post = {
           _id: resData._id,
           title: resData.title,
           content: resData.content,
-          image: resData.imageUrl,
+          image: resData.image,
           user: resData.user.name,
           createdAt: resData.createdAt
         };
@@ -309,7 +311,7 @@ class Feed extends Component {
                   user={post.user}
                   date={new Date(post.createdAt).toLocaleDateString('en-US')}
                   title={post.title}
-                  imageUrl={post.imageUrl}
+                  image={post.image}
                   content={post.content}
                   onStartEdit={this.startEditPostHandler.bind(this, post._id)}
                   onDelete={this.deletePostHandler.bind(this, post._id)}
