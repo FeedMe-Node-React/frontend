@@ -199,7 +199,7 @@ class Feed extends Component {
             // } else if (prevState.posts.length < 2) // {
             } else {
               // updatedPosts = prevState.posts.concat(post);
-              updatedPosts[0] = post;
+              updatedPosts.unshift(post);
           }
           return {
             posts: updatedPosts,
