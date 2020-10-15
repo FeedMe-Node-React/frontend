@@ -26,11 +26,11 @@ class SinglePost extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log(resData.data)
+        console.log(resData)
         this.setState({
           title: resData.title,
           user: resData.user.name,
-          image: 'http://localhost:8080/' + resData.imageUrl,
+          image: 'http://localhost:8080/' + resData.image,
           date: new Date(resData.createdAt).toLocaleDateString('en-US'),
           content: resData.content
         });
@@ -48,7 +48,7 @@ class SinglePost extends Component {
           Created by {this.state.user} on {this.state.date}
         </h2>
         <div className="single-post__image">
-          <Image contain imageUrl={this.state.image} />
+          <Image contain image={this.state.image} />
         </div>
         <p>{this.state.content}</p>
       </section>

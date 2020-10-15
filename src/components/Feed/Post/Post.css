@@ -5,6 +5,12 @@
   padding: 0.5rem;
 }
 
+.post__content {
+  font-size: 1rem;
+  color: #3b0062;
+  margin: 0;
+}
+
 .post__meta {
   font-size: 1rem;
   color: #707070;
@@ -18,7 +24,7 @@
 }
 
 .post__image {
-  height: 15rem;
+  height: 20rem;
   width: 100%;
 }
 

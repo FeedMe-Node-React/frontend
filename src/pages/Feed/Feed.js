@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react';
+import openSocket from 'socket.io-client';
 
 import Post from '../../components/Feed/Post/Post';
 import Button from '../../components/Button/Button';
 import FeedEdit from '../../components/Feed/FeedEdit/FeedEdit';
 import Input from '../../components/Form/Input/Input';
-import Paginator from '../../components/Paginator/Paginator';
+// import Paginator from '../../components/Paginator/Paginator';
 import Loader from '../../components/Loader/Loader';
 import ErrorHandler from '../../components/ErrorHandler/ErrorHandler';
 import './Feed.css';
@@ -32,19 +33,43 @@ class Feed extends Component {
         userId: userId
       })
     })
-      .then(res => {
-        if (res.status !== 200) {
-          throw new Error('Failed to fetch user status.');
-        }
-        return res.json();
-      })
-      .then(resData => {
-        this.setState({ status: resData.status });
-      })
-      .catch(this.catchError);
+    .then(res => {
+      if (res.status !== 200) {
+        throw new Error('Failed to fetch user status.');
+      }
+      return res.json();
+    })
+    .then(resData => {
+      this.setState({ status: resData.status });
+    })
+    .catch(this.catchError);
 
     this.loadPosts();
-  }
+    const socket = openSocket('http://localhost:8080');
+    socket.on('posts', data => {
+      console.log(data)
+      if (data.action === 'create') {
+        this.addPost(data.post);
+      }
+    });
+  };
+
+  addPost = post => {
+    this.setState(prevState => {
+      const updatedPosts = [...prevState.posts];
+      // if (prevState.postPage === 1) {
+      //   if (prevState.posts.length >= 2) {
+      //     updatedPosts.pop();
+      //   }
+      updatedPosts.unshift(post);
+      // }
+      console.log(post)
+      return {
+        posts: updatedPosts,
+        totalPosts: prevState.totalPosts + 1
+      };
+    });
+  };
 
   loadPosts = direction => {
     if (direction) {
@@ -61,6 +86,7 @@ class Feed extends Component {
     }
     fetch('http://localhost:8080/feed/posts/', {
       headers: {
+        'Content-Type': 'application/json',
         Authorization: 'Bearer ' + this.props.token
       }
     })
@@ -71,7 +97,6 @@ class Feed extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log(resData)
         this.setState({
           posts: resData,
           totalPosts: resData.totalItems,
@@ -156,13 +181,12 @@ class Feed extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log(resData);
         const post = {
           _id: resData._id,
           title: resData.title,
           content: resData.content,
-          image: resData.imageUrl,
-          user: resData.user.name,
+          image: resData.image,
+          user: resData.user,
           createdAt: resData.createdAt
         };
         this.setState(prevState => {
@@ -172,8 +196,10 @@ class Feed extends Component {
               p => p._id === prevState.editPost._id
             );
             updatedPosts[postIndex] = post;
-          } else if (prevState.posts.length < 2) {
-            updatedPosts = prevState.posts.concat(post);
+            // } else if (prevState.posts.length < 2) // {
+            } else {
+              // updatedPosts = prevState.posts.concat(post);
+              updatedPosts.unshift(post);
           }
           return {
             posts: updatedPosts,
@@ -273,26 +299,26 @@ class Feed extends Component {
             <p style={{ textAlign: 'center' }}>No posts found.</p>
           ) : null}
           {!this.state.postsLoading && (
-            <Paginator
-              onPrevious={this.loadPosts.bind(this, 'previous')}
-              onNext={this.loadPosts.bind(this, 'next')}
-              lastPage={Math.ceil(this.state.totalPosts / 2)}
-              currentPage={this.state.postPage}
-            >
-              {this.state.posts.map(post => (
-                <Post
+            // <Paginator
+            //   onPrevious={this.loadPosts.bind(this, 'previous')}
+            //   onNext={this.loadPosts.bind(this, 'next')}
+            //   lastPage={Math.ceil(this.state.totalPosts / 2)}
+            //   currentPage={this.state.postPage}
+            // >
+            this.state.posts.map(post => (
+              <Post
                   key={post._id}
                   id={post._id}
                   user={post.user}
                   date={new Date(post.createdAt).toLocaleDateString('en-US')}
                   title={post.title}
-                  imageUrl={post.imageUrl}
+                  image={post.image}
                   content={post.content}
                   onStartEdit={this.startEditPostHandler.bind(this, post._id)}
                   onDelete={this.deletePostHandler.bind(this, post._id)}
                 />
-              ))}
-            </Paginator>
+              ))
+            // </Paginator>
           )}
         </section>
       </Fragment>
