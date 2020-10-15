@@ -33,29 +33,25 @@ class Feed extends Component {
         userId: userId
       })
     })
-      .then(res => {
-        if (res.status !== 200) {
-          throw new Error('Failed to fetch user status.');
-        }
-        return res.json();
-      })
-      .then(resData => {
-        this.setState({ status: resData.status });
-      })
-      .catch(this.catchError);
-      
-      const socket = openSocket('http://localhost:8080');
-      
-      socket.on('connect', data => {
-        console.log(data)
-        this.loadPosts();
-      });
+    .then(res => {
+      if (res.status !== 200) {
+        throw new Error('Failed to fetch user status.');
+      }
+      return res.json();
+    })
+    .then(resData => {
+      this.setState({ status: resData.status });
+    })
+    .catch(this.catchError);
 
-      socket.on('posts', data => {
-        if (data.action === 'create') {
-          this.addPost(data.post);
-        }
-      });
+    this.loadPosts();
+    const socket = openSocket('http://localhost:8080');
+    socket.on('posts', data => {
+      console.log(data)
+      if (data.action === 'create') {
+        this.addPost(data.post);
+      }
+    });
   };
 
   addPost = post => {
@@ -67,12 +63,12 @@ class Feed extends Component {
       //   }
       updatedPosts.unshift(post);
       // }
+      console.log(post)
       return {
         posts: updatedPosts,
         totalPosts: prevState.totalPosts + 1
       };
     });
-    this.loadPosts();
   };
 
   loadPosts = direction => {
