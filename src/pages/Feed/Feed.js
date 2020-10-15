@@ -45,14 +45,17 @@ class Feed extends Component {
       .catch(this.catchError);
       
       const socket = openSocket('http://localhost:8080');
+      
+      socket.on('connect', data => {
+        console.log(data)
+        this.loadPosts();
+      });
+
       socket.on('posts', data => {
         if (data.action === 'create') {
           this.addPost(data.post);
-        } else if(data.action === 'connect') {
-          this.loadPosts();
         }
       });
-      this.loadPosts();
   };
 
   addPost = post => {
@@ -62,13 +65,14 @@ class Feed extends Component {
       //   if (prevState.posts.length >= 2) {
       //     updatedPosts.pop();
       //   }
-      //   updatedPosts.unshift(post);
+      updatedPosts.unshift(post);
       // }
       return {
         posts: updatedPosts,
         totalPosts: prevState.totalPosts + 1
       };
     });
+    this.loadPosts();
   };
 
   loadPosts = direction => {
