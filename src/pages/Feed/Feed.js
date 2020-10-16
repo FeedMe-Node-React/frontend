@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import openSocket from 'socket.io-client';
+// import openSocket from 'socket.io-client';
 
 import Post from '../../components/Feed/Post/Post';
 import Button from '../../components/Button/Button';
@@ -45,13 +45,13 @@ class Feed extends Component {
     .catch(this.catchError);
 
     this.loadPosts();
-    const socket = openSocket('http://localhost:8080');
-    socket.on('posts', data => {
-      console.log(data)
-      if (data.action === 'create') {
-        this.addPost(data.post);
-      }
-    });
+    // const socket = openSocket('http://localhost:8080');
+    // socket.on('posts', data => {
+    //   console.log(data)
+    //   if (data.action === 'create') {
+    //     this.addPost(data.post);
+    //   }
+    // });
   };
 
   addPost = post => {
@@ -86,6 +86,7 @@ class Feed extends Component {
     }
     fetch('http://localhost:8080/feed/posts/', {
       headers: {
+        'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + this.props.token
       }
@@ -112,6 +113,7 @@ class Feed extends Component {
     fetch('http://localhost:8080/user/' + userId, {
       headers: {
         'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
         Authorization: 'Bearer ' + this.props.token,
       },
       method: 'PATCH',
@@ -170,6 +172,8 @@ class Feed extends Component {
     fetch(url, {
       method: method,
       headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*' ,    
         Authorization: 'Bearer ' + this.props.token,
       },
       body: formData
@@ -229,6 +233,7 @@ class Feed extends Component {
     fetch('http://localhost:8080/feed/post/' + postId, {
       method: 'DELETE',
       headers: {
+        'Access-Control-Allow-Origin': '*',
         Authorization: 'Bearer ' + this.props.token,
       },
     })
