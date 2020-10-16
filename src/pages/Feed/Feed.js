@@ -26,7 +26,7 @@ class Feed extends Component {
     const userId = this.props.userId;
     fetch('http://localhost:8080/user/' + userId, {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       method: 'POST',
       body: JSON.stringify({
@@ -86,7 +86,6 @@ class Feed extends Component {
     }
     fetch('http://localhost:8080/feed/posts/', {
       headers: {
-        'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + this.props.token
       }
@@ -113,7 +112,6 @@ class Feed extends Component {
     fetch('http://localhost:8080/user/' + userId, {
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
         Authorization: 'Bearer ' + this.props.token,
       },
       method: 'PATCH',
@@ -172,8 +170,6 @@ class Feed extends Component {
     fetch(url, {
       method: method,
       headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*' ,    
         Authorization: 'Bearer ' + this.props.token,
       },
       body: formData
