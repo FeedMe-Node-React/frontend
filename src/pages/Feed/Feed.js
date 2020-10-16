@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-// import openSocket from 'socket.io-client';
+import openSocket from 'socket.io-client';
 
 import Post from '../../components/Feed/Post/Post';
 import Button from '../../components/Button/Button';
@@ -33,25 +33,27 @@ class Feed extends Component {
         userId: userId
       })
     })
-    .then(res => {
-      if (res.status !== 200) {
-        throw new Error('Failed to fetch user status.');
-      }
-      return res.json();
-    })
-    .then(resData => {
-      this.setState({ status: resData.status });
-    })
-    .catch(this.catchError);
+      .then(res => {
+        if (res.status !== 200) {
+          throw new Error('Failed to fetch user status.');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        this.setState({ status: resData.status });
+      })
+      .catch(this.catchError);
 
     this.loadPosts();
-    // const socket = openSocket('http://localhost:8080');
-    // socket.on('posts', data => {
-    //   console.log(data)
-    //   if (data.action === 'create') {
-    //     this.addPost(data.post);
-    //   }
-    // });
+    const socket = openSocket('ws://localhost:8080');
+
+    socket.on('posts', data => {
+      console.log(data)
+
+      if (data.action === 'create' && data.post.user._id !== userId) {
+        this.addPost(data.post);
+      }
+    });
   };
 
   addPost = post => {
@@ -197,9 +199,9 @@ class Feed extends Component {
             );
             updatedPosts[postIndex] = post;
             // } else if (prevState.posts.length < 2) // {
-            } else {
-              // updatedPosts = prevState.posts.concat(post);
-              updatedPosts.unshift(post);
+          } else {
+            // updatedPosts = prevState.posts.concat(post);
+            updatedPosts.unshift(post);
           }
           return {
             posts: updatedPosts,
@@ -307,17 +309,17 @@ class Feed extends Component {
             // >
             this.state.posts.map(post => (
               <Post
-                  key={post._id}
-                  id={post._id}
-                  user={post.user}
-                  date={new Date(post.createdAt).toLocaleDateString('en-US')}
-                  title={post.title}
-                  image={post.image}
-                  content={post.content}
-                  onStartEdit={this.startEditPostHandler.bind(this, post._id)}
-                  onDelete={this.deletePostHandler.bind(this, post._id)}
-                />
-              ))
+                key={post._id}
+                id={post._id}
+                user={post.user}
+                date={new Date(post.createdAt).toLocaleDateString('en-US')}
+                title={post.title}
+                image={post.image}
+                content={post.content}
+                onStartEdit={this.startEditPostHandler.bind(this, post._id)}
+                onDelete={this.deletePostHandler.bind(this, post._id)}
+              />
+            ))
             // </Paginator>
           )}
         </section>
