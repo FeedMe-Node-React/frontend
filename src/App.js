@@ -109,7 +109,7 @@ class App extends Component {
   signupHandler = (event, authData) => {
     event.preventDefault();
     this.setState({ authLoading: true });
-    fetch(process.env.SERVER_URI + '/auth/signup', {
+    fetch('https://feed-me-node-api.herokuapp.com/auth/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
