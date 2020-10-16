@@ -229,7 +229,6 @@ class Feed extends Component {
     fetch('http://localhost:8080/feed/post/' + postId, {
       method: 'DELETE',
       headers: {
-        'Access-Control-Allow-Origin': '*',
         Authorization: 'Bearer ' + this.props.token,
       },
     })
