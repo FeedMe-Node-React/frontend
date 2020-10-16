@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import 'dotenv';
 
 import Image from '../../../components/Image/Image';
 import './SinglePost.css';
@@ -14,7 +15,7 @@ class SinglePost extends Component {
 
   componentDidMount() {
     const postId = this.props.match.params.postId;
-    fetch('http://localhost:8080/feed/post/' + postId, {
+    fetch(process.env.SERVER_URI + '/feed/post/' + postId, {
       headers: {
         Authorization: 'Bearer ' + this.props.token
       }
@@ -30,7 +31,7 @@ class SinglePost extends Component {
         this.setState({
           title: resData.title,
           user: resData.user.name,
-          image: 'http://localhost:8080/' + resData.image,
+          image: process.env.SERVER_URI + resData.image,
           date: new Date(resData.createdAt).toLocaleDateString('en-US'),
           content: resData.content
         });
