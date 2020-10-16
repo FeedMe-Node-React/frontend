@@ -24,7 +24,7 @@ class Feed extends Component {
 
   componentDidMount() {
     const userId = this.props.userId;
-    fetch(process.env.SERVER_URI + '/user/' + userId, {
+    fetch('https://feed-me-node-api.herokuapp.com' + '/user/' + userId, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -45,7 +45,7 @@ class Feed extends Component {
       .catch(this.catchError);
 
     this.loadPosts();
-    const socket = openSocket(process.env.SOCKET_URI);
+    const socket = openSocket('ws://feed-me-node-api.herokuapp.com');
 
     socket.on('posts', data => {
       console.log(data)
@@ -86,7 +86,7 @@ class Feed extends Component {
       page--;
       this.setState({ postPage: page });
     }
-    fetch(process.env.SERVER_URI + '/feed/posts/', {
+    fetch('https://feed-me-node-api.herokuapp.com' + '/feed/posts/', {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + this.props.token
@@ -111,7 +111,7 @@ class Feed extends Component {
   statusUpdateHandler = event => {
     const userId = this.props.userId;
     event.preventDefault();
-    fetch(process.env.SERVER_URI + '/user/' + userId, {
+    fetch('https://feed-me-node-api.herokuapp.com' + '/user/' + userId, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + this.props.token,
@@ -162,7 +162,7 @@ class Feed extends Component {
     formData.append('image', postData.image)
     formData.append('userId', this.props.userId)
 
-    let url = process.env.SERVER_URI + '/feed/post/';
+    let url = 'https://feed-me-node-api.herokuapp.com' + '/feed/post/';
     let method = 'POST'
     if (this.state.editPost) {
       url = url + this.state.editPost._id;
@@ -228,7 +228,7 @@ class Feed extends Component {
 
   deletePostHandler = postId => {
     this.setState({ postsLoading: true });
-    fetch(process.env.SERVER_URI + '/feed/post/' + postId, {
+    fetch('https://feed-me-node-api.herokuapp.com' + '/feed/post/' + postId, {
       method: 'DELETE',
       headers: {
         Authorization: 'Bearer ' + this.props.token,
