@@ -79,9 +79,9 @@ class Feed extends Component {
   };
   
   deletePost = post => {
+    console.log(post);
     this.setState(prevState => {
-      const updatedPosts = [...prevState.posts];
-      updatedPosts.splice(post);
+      const updatedPosts = prevState.posts.filter(p => p._id !== post._id);
       return {
         posts: updatedPosts,
         totalPosts: prevState.totalPosts - 1,
@@ -220,7 +220,6 @@ class Feed extends Component {
             updatedPosts[postIndex] = post;
             // } else if (prevState.posts.length < 2) // {
           } else {
-            // updatedPosts = prevState.posts.concat(post);
             updatedPosts.unshift(post);
           }
           return {
@@ -260,13 +259,6 @@ class Feed extends Component {
           throw new Error('Deleting a post failed!');
         }
         return res.json();
-      })
-      .then(resData => {
-        console.log(resData);
-        this.setState(prevState => {
-          const updatedPosts = prevState.posts.filter(p => p._id !== postId);
-          return { posts: updatedPosts, postsLoading: false };
-        });
       })
       .catch(err => {
         console.log(err);
