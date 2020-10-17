@@ -44,18 +44,21 @@ class Feed extends Component {
         this.setState({ status: resData.status });
       })
       .catch(this.catchError);
-
-    this.loadPosts();
+    
     const socket = openSocket('ws://localhost:8080');
     // const socket = openSocket('ws://feed-me-node-api.herokuapp.com');
 
     socket.on('posts', data => {
-      console.log(data)
-
+      console.log(data);
+      
       if (data.action === 'create' && data.post.user._id !== userId) {
         this.addPost(data.post);
+      } else if (data.action === 'delete') {
+        this.deletePost(data.post);
       }
     });
+    
+    this.loadPosts();
   };
 
   addPost = post => {
@@ -71,6 +74,18 @@ class Feed extends Component {
       return {
         posts: updatedPosts,
         totalPosts: prevState.totalPosts + 1
+      };
+    });
+  };
+  
+  deletePost = post => {
+    this.setState(prevState => {
+      const updatedPosts = [...prevState.posts];
+      updatedPosts.splice(post);
+      return {
+        posts: updatedPosts,
+        totalPosts: prevState.totalPosts - 1,
+        postsLoading: false
       };
     });
   };
