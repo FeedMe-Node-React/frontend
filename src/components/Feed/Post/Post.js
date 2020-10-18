@@ -1,4 +1,6 @@
 import React from 'react';
+import dotenv from 'dotenv';
+dotenv.config();
 
 import Button from '../../Button/Button';
 import Image from '../../Image/Image';

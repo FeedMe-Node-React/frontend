@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import openSocket from 'socket.io-client';
+import dotenv from 'dotenv';
+dotenv.config();
 
 import Post from '../../components/Feed/Post/Post';
 import Button from '../../components/Button/Button';

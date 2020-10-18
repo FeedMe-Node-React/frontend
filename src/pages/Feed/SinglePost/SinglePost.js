@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import 'dotenv';
+import dotenv from 'dotenv';
+dotenv.config();
 
 import Image from '../../../components/Image/Image';
 import './SinglePost.css';
