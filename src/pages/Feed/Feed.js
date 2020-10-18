@@ -27,7 +27,6 @@ class Feed extends Component {
 
   componentDidMount() {
     const userId = this.props.userId;
-    // fetch('http://localhost:8080/user/' + userId, {
     fetch(process.env.HEROKU_URI + '/' + userId, {
       headers: {
         'Content-Type': 'application/json',
@@ -48,7 +47,6 @@ class Feed extends Component {
       })
       .catch(this.catchError);
     
-    // const socket = openSocket('ws://localhost:8080');
     const socket = openSocket(process.env.SOCKET_URI);
 
     socket.on('posts', data => {
@@ -106,7 +104,6 @@ class Feed extends Component {
       page--;
       this.setState({ postPage: page });
     }
-    // fetch('http://localhost:8080/feed/posts/', {
     fetch(process.env.HEROKU_URI + '/feed/posts/', {
       headers: {
         'Content-Type': 'application/json',
@@ -132,7 +129,6 @@ class Feed extends Component {
   statusUpdateHandler = event => {
     const userId = this.props.userId;
     event.preventDefault();
-    // fetch('http://localhost:8080/user/' + userId, {
     fetch(process.env.HEROKU_URI + '/' + userId, {
       headers: {
         'Content-Type': 'application/json',
@@ -184,7 +180,6 @@ class Feed extends Component {
     formData.append('image', postData.image)
     formData.append('userId', this.props.userId)
 
-    // let url = 'http://localhost:8080/feed/post/';
     let url = process.env.HEROKU_URI + '/feed/post/';
     let method = 'POST'
     if (this.state.editPost) {
@@ -250,7 +245,6 @@ class Feed extends Component {
 
   deletePostHandler = postId => {
     this.setState({ postsLoading: true });
-    // fetch('http://localhost:8080/feed/post/' + postId, {
     fetch(process.env.HEROKU_URI + '/feed/post/' + postId, {
       method: 'DELETE',
       headers: {
