@@ -14,7 +14,7 @@ const post = props => (
     </header>
     <div className="post__image">
       {/* <Image image={'http://localhost:8080/' + props.image} contain /> */}
-      <Image image={'https://feed-me-node-api.herokuapp.com/' + props.image} contain />
+      <Image image={process.env.HEROKU_URI + '/' + props.image} contain />
     </div>
     <div className="post__content">{props.content}</div>
     <div className="post__actions">

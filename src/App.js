@@ -61,7 +61,7 @@ class App extends Component {
     event.preventDefault();
     this.setState({ authLoading: true });
     // fetch('http://localhost:8080/auth/login', {
-    fetch('https://feed-me-node-api.herokuapp.com/auth/login', {
+    fetch(process.env.HEROKU_URI + '/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -111,7 +111,7 @@ class App extends Component {
     event.preventDefault();
     this.setState({ authLoading: true });
     // fetch('http://localhost:8080/auth/signup', {
-    fetch('https://feed-me-node-api.herokuapp.com/auth/signup', {
+    fetch(process.env.HEROKU_URI + '/auth/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -25,7 +25,7 @@ class Feed extends Component {
   componentDidMount() {
     const userId = this.props.userId;
     // fetch('http://localhost:8080/user/' + userId, {
-    fetch('https://feed-me-node-api.herokuapp.com/user/' + userId, {
+    fetch(process.env.HEROKU_URI + '/' + userId, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -46,7 +46,7 @@ class Feed extends Component {
       .catch(this.catchError);
     
     // const socket = openSocket('ws://localhost:8080');
-    const socket = openSocket('ws://feed-me-node-api.herokuapp.com');
+    const socket = openSocket(process.env.SOCKET_URI);
 
     socket.on('posts', data => {
       console.log(data);
@@ -104,7 +104,7 @@ class Feed extends Component {
       this.setState({ postPage: page });
     }
     // fetch('http://localhost:8080/feed/posts/', {
-    fetch('https://feed-me-node-api.herokuapp.com/feed/posts/', {
+    fetch(process.env.HEROKU_URI + '/feed/posts/', {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + this.props.token
@@ -130,7 +130,7 @@ class Feed extends Component {
     const userId = this.props.userId;
     event.preventDefault();
     // fetch('http://localhost:8080/user/' + userId, {
-    fetch('https://feed-me-node-api.herokuapp.com/user/' + userId, {
+    fetch(process.env.HEROKU_URI + '/' + userId, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + this.props.token,
@@ -182,7 +182,7 @@ class Feed extends Component {
     formData.append('userId', this.props.userId)
 
     // let url = 'http://localhost:8080/feed/post/';
-    let url = 'https://feed-me-node-api.herokuapp.com/feed/post/';
+    let url = process.env.HEROKU_URI + '/feed/post/';
     let method = 'POST'
     if (this.state.editPost) {
       url = url + this.state.editPost._id;
@@ -248,7 +248,7 @@ class Feed extends Component {
   deletePostHandler = postId => {
     this.setState({ postsLoading: true });
     // fetch('http://localhost:8080/feed/post/' + postId, {
-    fetch('https://feed-me-node-api.herokuapp.com/feed/post/' + postId, {
+    fetch(process.env.HEROKU_URI + '/feed/post/' + postId, {
       method: 'DELETE',
       headers: {
         Authorization: 'Bearer ' + this.props.token,
