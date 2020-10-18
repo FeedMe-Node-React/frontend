@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import dotenv from 'dotenv';
-dotenv.config();
-
 import Image from '../../../components/Image/Image';
 import './SinglePost.css';
+
+dotenv.config();
 
 class SinglePost extends Component {
   state = {

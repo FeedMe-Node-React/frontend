@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import openSocket from 'socket.io-client';
 import dotenv from 'dotenv';
-dotenv.config();
 
 import Post from '../../components/Feed/Post/Post';
 import Button from '../../components/Button/Button';
@@ -11,6 +10,8 @@ import Input from '../../components/Form/Input/Input';
 import Loader from '../../components/Loader/Loader';
 import ErrorHandler from '../../components/ErrorHandler/ErrorHandler';
 import './Feed.css';
+
+dotenv.config();
 
 class Feed extends Component {
   state = {
