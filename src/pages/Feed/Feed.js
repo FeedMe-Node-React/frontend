@@ -44,7 +44,7 @@ class Feed extends Component {
       })
       .catch(this.catchError);
     
-    const socket = openSocket('ws://feed-me-node-api.herokuapp.com/');
+    const socket = openSocket('https://feed-me-node-api.herokuapp.com/');
 
     socket.on('posts', data => {
       console.log(data);
