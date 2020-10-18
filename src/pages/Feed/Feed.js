@@ -125,7 +125,7 @@ class Feed extends Component {
   statusUpdateHandler = event => {
     const userId = this.props.userId;
     event.preventDefault();
-    fetch('https://feed-me-node-api.herokuapp.com/' + userId, {
+    fetch('https://feed-me-node-api.herokuapp.com/user/' + userId, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + this.props.token,
